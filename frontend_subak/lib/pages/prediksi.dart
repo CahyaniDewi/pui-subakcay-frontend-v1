@@ -15,7 +15,7 @@ class _PredictScreenState extends State<PredictScreen> {
   Map<String, dynamic>? _result;
 
   Future<void> _submit() async {
-    final url = Uri.parse('http://127.0.0.1:5000/predict'); // Ganti jika perlu
+    final url = Uri.parse('http://127.0.0.1:5000/predict');
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
@@ -63,15 +63,15 @@ class _PredictScreenState extends State<PredictScreen> {
           children: [
             Text("📋 Hasil Prediksi", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 12),
-            Text("✅ Jenis Padi: ${input['jenis_padi']}"),
-            Text("🌦️ Musim: ${input['musim']} (${input['musim_bulan'].join(', ')})"),
-            Text("🌾 Luas Lahan: ${input['luas_lahan']} hektar"),
+            Text("Jenis Padi: ${input['jenis_padi']}"),
+            Text("Musim: ${input['musim']} (${input['musim_bulan'].join(', ')})"),
+            Text("Luas Lahan: ${input['luas_lahan']} hektar"),
             Divider(height: 24),
-            Text("📊 Cluster: ${hasil['cluster']}"),
-            Text("📈 Tingkat Kecocokan: ${hasil['ditingkat_kecocokan']}"),
-            Text("🔍 Hasil: ${hasil['hasil']}"),
-            Text("📅 Musim Terbaik: ${hasil['musim_terbaik']} (${hasil['musim_bulan_terbaik'].join(', ')})"),
-            Text("💡 Saran: ${hasil['saran_musim_terbaik']}"),
+            Text("Cluster: ${hasil['cluster']}"),
+            Text("Tingkat Kecocokan: ${hasil['ditingkat_kecocokan']}"),
+            Text("Hasil: ${hasil['hasil']}"),
+            Text("Musim Terbaik: ${hasil['musim_terbaik']} (${hasil['musim_bulan_terbaik'].join(', ')})"),
+            Text("Saran: ${hasil['saran_musim_terbaik']}"),
           ],
         ),
       ),
@@ -80,80 +80,92 @@ class _PredictScreenState extends State<PredictScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Prediksi Produksi Padi'),
-        centerTitle: true,
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFFE3F2FD), Color(0xFFFFFFFF)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 600),
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(16),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text("📝 Masukkan Data", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 16),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Jenis Padi',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.grass),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text('Prediksi Produksi Padi'),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text("📝 Masukkan Data", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Jenis Padi',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            prefixIcon: const Icon(Icons.grass),
+                          ),
+                          validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+                          onChanged: (value) => _jenisPadi = value,
                         ),
-                        validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
-                        onChanged: (value) => _jenisPadi = value,
-                      ),
-                      SizedBox(height: 16),
-                      DropdownButtonFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Musim',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.cloud),
+                        const SizedBox(height: 16),
+                        DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Musim',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            prefixIcon: const Icon(Icons.cloud),
+                          ),
+                          value: _musim,
+                          items: ['hujan', 'kemarau', 'peralihan']
+                              .map((m) => DropdownMenuItem(value: m, child: Text(m)))
+                              .toList(),
+                          onChanged: (value) => setState(() => _musim = value!),
                         ),
-                        value: _musim,
-                        items: ['hujan', 'kemarau', 'peralihan']
-                            .map((m) => DropdownMenuItem(value: m, child: Text(m)))
-                            .toList(),
-                        onChanged: (value) => setState(() => _musim = value!),
-                      ),
-                      SizedBox(height: 16),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Luas Lahan (hektar)',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.area_chart),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Luas Lahan (hektar)',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            prefixIcon: const Icon(Icons.area_chart),
+                          ),
+                          keyboardType: TextInputType.number,
+                          validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+                          onChanged: (value) => _luasLahan = value,
                         ),
-                        keyboardType: TextInputType.number,
-                        validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
-                        onChanged: (value) => _luasLahan = value,
-                      ),
-                      SizedBox(height: 24),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _submit();
-                          }
-                        },
-                        icon: Icon(Icons.analytics),
-                        label: Text('Prediksi Sekarang'),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          textStyle: TextStyle(fontSize: 16),
+                        const SizedBox(height: 24),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _submit();
+                            }
+                          },
+                          icon: const Icon(Icons.analytics),
+                          label: const Text('Prediksi Sekarang'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            textStyle: const TextStyle(fontSize: 16),
+                          ),
                         ),
-                      ),
-                      _buildResult()
-                    ],
+                        _buildResult()
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

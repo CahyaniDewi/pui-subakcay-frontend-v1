@@ -31,8 +31,16 @@ dependencies:
   flutter:
     sdk: flutter
   fl_chart: ^0.64.0
-
   http: ^0.13.6
+  firebase_auth: ^4.17.4
+  firebase_core: ^2.27.0
+
+  provider: ^6.1.1
+
+  # firebase_core: ^2.0.0
+  # firebase_auth: ^4.0.0
+  # google_sign_in: ^6.0.0
+
 
 
 
@@ -68,6 +76,15 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
   - assets/img/petani.png
+  - assets/img/getpetani.png
+  - assets/img/ikonprofil.png
+  - assets/img/ilustrasi_pertanian.jpg
+  - assets/img/statistik.png
+  - assets/img/polatanam.png
+  - assets/img/perawatan.png
+  - assets/img/subak.png
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_subak/pages/prediksi.dart';
 import 'package:frontend_subak/pages/statistic_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:frontend_subak/providers/theme_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,17 +10,30 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isWideScreen = MediaQuery.of(context).size.width > 600;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Selamat datang, Cahyani Dewi'),
+        title: Text(
+          'Selamat datang, Cahya',
+          style: theme.textTheme.titleLarge,
+        ),
         actions: [
+          IconButton(
+            icon: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
+            onPressed: () {
+              final provider = Provider.of<ThemeProvider>(context, listen: false);
+              provider.toggleTheme(!isDark);
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
           const CircleAvatar(
-            backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+            backgroundImage: AssetImage('assets/img/ikonprofil.png'),
           ),
           const SizedBox(width: 16),
         ],
@@ -30,45 +45,34 @@ class HomeScreen extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 800),
             child: ListView(
               children: [
-                const Text(
-                  'Kelola Pertanian Lebih Mudah dengan AgriSubak 🚜',
+                Text(
+                  'Kelola Pertanian Lebih Mudah dengan AgriSubak',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: colorScheme.primary,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green,
                   ),
                 ),
                 const SizedBox(height: 10),
-                Image.network(
-                  'https://cdn-icons-png.flaticon.com/512/2909/2909769.png',
-                  height: 180,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    'assets/img/ilustrasi_pertanian.jpg',
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   'Dapatkan rekomendasi pola tanam, analisis hasil panen, dan informasi subak dalam satu aplikasi.',
                   textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
-                    color: Colors.blue.shade50,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text('Cuaca 🌦️', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                      Text('Lihat Detail', style: TextStyle(color: Colors.blue)),
-                    ],
-                  ),
+                  style: theme.textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Pantau dan Kelola Pola Tanam dengan Mudah 🌾',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                Text(
+                  'Pantau dan Kelola Pola Tanam dengan Mudah',
+                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
                 GridView.count(
@@ -76,14 +80,14 @@ class HomeScreen extends StatelessWidget {
                   crossAxisCount: isWideScreen ? 4 : 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
+                  childAspectRatio: 0.95,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     _buildMenuCard(
                       context,
                       'Statistik',
-                      'https://img.icons8.com/color/96/combo-chart--v1.png',
+                      'assets/img/statistik.png',
                       () {
-                        // TODO: Tambahkan navigasi Statistik
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const StatisticScreen()),
@@ -93,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                     _buildMenuCard(
                       context,
                       'Pola Tanam',
-                      'https://img.icons8.com/color/96/vegetarian-food.png',
+                      'assets/img/polatanam.png',
                       () {
                         Navigator.push(
                           context,
@@ -103,18 +107,18 @@ class HomeScreen extends StatelessWidget {
                     ),
                     _buildMenuCard(
                       context,
-                      'Hasil Panen',
-                      'https://img.icons8.com/color/96/harvest.png',
+                      'Perawatan',
+                      'assets/img/perawatan.png',
                       () {
-                        // TODO: Tambahkan navigasi Hasil Panen
+                        // TODO: Navigasi Hasil Panen
                       },
                     ),
                     _buildMenuCard(
                       context,
                       'Subak',
-                      'https://img.icons8.com/color/96/landscape.png',
+                      'assets/img/subak.png',
                       () {
-                        // TODO: Tambahkan navigasi Subak
+                        // TODO: Navigasi Subak
                       },
                     ),
                   ],
@@ -132,32 +136,41 @@ class HomeScreen extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifikasi'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: colorScheme.primary,
+        unselectedItemColor: colorScheme.outline,
         type: BottomNavigationBarType.fixed,
       ),
     );
   }
 
-  Widget _buildMenuCard(BuildContext context, String label, String imageUrl, VoidCallback onTap) {
+  Widget _buildMenuCard(
+    BuildContext context,
+    String label,
+    String assetPath,
+    VoidCallback onTap,
+  ) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF007E65),
+          color: theme.colorScheme.primary,
           borderRadius: BorderRadius.circular(20),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.network(imageUrl, height: 50),
+            Image.asset(assetPath, height: 60, fit: BoxFit.contain),
             const SizedBox(height: 10),
             Text(
               label,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            )
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),

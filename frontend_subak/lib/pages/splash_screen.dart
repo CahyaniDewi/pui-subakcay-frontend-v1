@@ -16,8 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     // Navigasi ke halaman prediksi setelah 3 detik
-    Timer(const Duration(seconds: 10), () {
-      Navigator.pushReplacementNamed(context, '/home');
+    Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, '/get-started');
     });
   }
 
