@@ -49,7 +49,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              const SizedBox(height: 100),
+              const SizedBox(height: 10),
+              // Tambahkan gambar di sini
+              Center(
+                child: Image.asset(
+                  'assets/img/getpetani.png',
+                  width: 250,
+                  height: 250,
+                ),
+              ),
+              const SizedBox(height: 10),
               const Center(
                 child: Text(
                   "Daftar ke AgriSubak",

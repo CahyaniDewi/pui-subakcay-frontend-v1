@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'register_screen.dart';
@@ -49,7 +51,16 @@ class _LoginScreenState extends State<LoginScreen> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              const SizedBox(height: 100),
+              const SizedBox(height: 10),
+              // Tambahkan gambar di sini
+              Center(
+                child: Image.asset(
+                  'assets/img/getpetani.png',
+                  width: 250,
+                  height: 250,
+                ),
+              ),
+              const SizedBox(height: 10),
               const Center(
                 child: Text(
                   "Masuk ke AgriSubak",

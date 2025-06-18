@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, avoid_print, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -15,7 +17,7 @@ class _PredictScreenState extends State<PredictScreen> {
   Map<String, dynamic>? _result;
 
   Future<void> _submit() async {
-    final url = Uri.parse('http://127.0.0.1:5000/predict');
+    final url = Uri.parse('http://172.20.10.2:5000/predict');
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
@@ -25,6 +27,8 @@ class _PredictScreenState extends State<PredictScreen> {
         "luas_lahan": _luasLahan
       }),
     );
+    print('Status: ${response.statusCode}');
+    print('Body: ${response.body}');
 
     if (response.statusCode == 200) {
       setState(() {
@@ -32,9 +36,7 @@ class _PredictScreenState extends State<PredictScreen> {
       });
     } else {
       setState(() {
-        _result = {
-          "error": "Gagal mendapatkan prediksi: ${response.body}"
-        };
+        _result = {"error": "Gagal mendapatkan prediksi: ${response.body}"};
       });
     }
   }
@@ -61,17 +63,21 @@ class _PredictScreenState extends State<PredictScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("📋 Hasil Prediksi", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text("📋 Hasil Prediksi",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 12),
             Text("Jenis Padi: ${input['jenis_padi']}"),
-            Text("Musim: ${input['musim']} (${input['musim_bulan'].join(', ')})"),
+            Text(
+                "Musim: ${input['musim']} (${input['musim_bulan'].join(', ')})"),
             Text("Luas Lahan: ${input['luas_lahan']} "),
             Divider(height: 24),
             Text("Cluster: ${hasil['cluster']}"),
             Text("Tingkat Kecocokan: ${hasil['ditingkat_kecocokan']}"),
             Text("Hasil: ${hasil['hasil']}"),
-            Text("Musim Terbaik: ${hasil['musim_terbaik']} (${hasil['musim_bulan_terbaik'].join(', ')})"),
-            Text("Saran: ${hasil['saran_musim_terbaik']}"),
+            Text(
+                "Musim Terbaik: ${hasil['musim_terbaik']} (${hasil['musim_bulan_terbaik'].join(', ')})"),
+            Text(
+                "Saran Mumism Terbaikkkkkkkkkkkkkkkk: ${hasil['saran_musim_terbaik']}"),
           ],
         ),
       ),
@@ -108,27 +114,33 @@ class _PredictScreenState extends State<PredictScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Text("📝 Masukkan Data", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const Text("📝 Masukkan Data",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Jenis Padi',
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
                             prefixIcon: const Icon(Icons.grass),
                           ),
-                          validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+                          validator: (value) =>
+                              value!.isEmpty ? 'Wajib diisi' : null,
                           onChanged: (value) => _jenisPadi = value,
                         ),
                         const SizedBox(height: 16),
                         DropdownButtonFormField(
                           decoration: InputDecoration(
                             labelText: 'Musim',
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
                             prefixIcon: const Icon(Icons.cloud),
                           ),
                           value: _musim,
                           items: ['hujan', 'kemarau', 'peralihan']
-                              .map((m) => DropdownMenuItem(value: m, child: Text(m)))
+                              .map((m) =>
+                                  DropdownMenuItem(value: m, child: Text(m)))
                               .toList(),
                           onChanged: (value) => setState(() => _musim = value!),
                         ),
@@ -136,11 +148,13 @@ class _PredictScreenState extends State<PredictScreen> {
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Luas Lahan (Are)',
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
                             prefixIcon: const Icon(Icons.area_chart),
                           ),
                           keyboardType: TextInputType.number,
-                          validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+                          validator: (value) =>
+                              value!.isEmpty ? 'Wajib diisi' : null,
                           onChanged: (value) => _luasLahan = value,
                         ),
                         const SizedBox(height: 24),

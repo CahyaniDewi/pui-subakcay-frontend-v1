@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:frontend_subak/pages/prediksi.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend_subak/pages/dashboard.dart';
 import 'package:frontend_subak/pages/getstarted_screen.dart';
@@ -71,6 +74,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
+        '/prediksi': (context) => PredictScreen(),
       },
     );
   }
