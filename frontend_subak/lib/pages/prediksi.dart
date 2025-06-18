@@ -65,7 +65,7 @@ class _PredictScreenState extends State<PredictScreen> {
             SizedBox(height: 12),
             Text("Jenis Padi: ${input['jenis_padi']}"),
             Text("Musim: ${input['musim']} (${input['musim_bulan'].join(', ')})"),
-            Text("Luas Lahan: ${input['luas_lahan']} hektar"),
+            Text("Luas Lahan: ${input['luas_lahan']} "),
             Divider(height: 24),
             Text("Cluster: ${hasil['cluster']}"),
             Text("Tingkat Kecocokan: ${hasil['ditingkat_kecocokan']}"),
@@ -91,7 +91,7 @@ class _PredictScreenState extends State<PredictScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text('Prediksi Produksi Padi'),
+          title: const Text('Rekomendasi Musim Tanam Padi'),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -135,7 +135,7 @@ class _PredictScreenState extends State<PredictScreen> {
                         const SizedBox(height: 16),
                         TextFormField(
                           decoration: InputDecoration(
-                            labelText: 'Luas Lahan (hektar)',
+                            labelText: 'Luas Lahan (Are)',
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                             prefixIcon: const Icon(Icons.area_chart),
                           ),

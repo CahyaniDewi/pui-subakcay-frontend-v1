@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Selamat datang, Cahya',
+          'Selamat datang, Farmer',
           style: theme.textTheme.titleLarge,
         ),
         actions: [
@@ -110,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                       'Perawatan',
                       'assets/img/perawatan.png',
                       () {
-                        // TODO: Navigasi Hasil Panen
+                        // TODO: Navigasi perawatan
                       },
                     ),
                     _buildMenuCard(
@@ -177,3 +177,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
